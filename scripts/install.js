@@ -19,14 +19,15 @@
     var repositoryRoot = modulePath.slice( 0, rootLength );
 
     process.stdout.write(
-        '--------------------------------------------------------------------------------\n' +
-        'I will now copy the files into “' + repositoryRoot + '”…\n'
+        '--------------------------------------------------------------------------------\n'
+        + 'I will now copy linters config files into “' + repositoryRoot + '”…\n'
     );
 
     // Exit current process only once all files are copied.
     copyFiles( repositoryRoot ).then(function() {
         process.stdout.write(
-            'All the .rc files for linters were copied successfully. ------------------------\n\n'
+            'All the linters config files were copied successfully.'
+            + '\n--------------------------------------------------------------------------------\n\n'
         );
 
         process.exit();
@@ -37,12 +38,13 @@
      * This function uses promises to deal with latency between read and write operations.
      * Not doing so will lead to the creation of empty files.
      *
-     * @see  http://bluebirdjs.com/docs/api-reference.html
-     * @param  {string} dest - Folder to copy the files to.
+     * @see http://bluebirdjs.com/docs/api-reference.html
+     *
+     * @param {string} dest - Folder to copy the files to.
      */
     function copyFiles( dest ) {
         return Promise.all(
-            files.map(function( file, index ) {
+            files.map(function( file ) {
                 var readFileAsync  = Promise.promisify( fs.readFile );
                 var writeFileAsync = Promise.promisify( fs.writeFile );
                 var fileRead       = readFileAsync( file );
